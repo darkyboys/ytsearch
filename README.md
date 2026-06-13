@@ -10,6 +10,21 @@ The project demonstrates HTML scraping and lightweight parsing without relying o
 
 > **License:** CC0 1.0 Universal (Public Domain Dedication)
 
+## Installation
+Make sure that you have git, gcc and curl installed on your system.
+```bash
+git clone https://github.com/darkyboys/ytsearch
+cd ytsearch
+g++ ytsearch.cpp -o ytsearch
+```
+
+This will make the ytsearch binary. If you want to install for easier access then run
+```bash
+sudo mv ytsearch /usr/local/bin
+```
+
+and then in your terminal you can always run `ytsearch queery`
+
 ---
 
 ## Overview
