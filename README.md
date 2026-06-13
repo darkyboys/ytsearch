@@ -331,4 +331,6 @@ See:
 
 LICENSE
 
+ > A Quick Note: the httplib.h is licensed under the MIT (Because it's cpp-httplib)
+
 for full license details.
