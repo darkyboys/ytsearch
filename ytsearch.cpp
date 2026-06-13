@@ -1,3 +1,6 @@
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include "httplib.h"
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -269,34 +272,45 @@ std::vector<std::string> ExtractTitles(const std::string& content)
     return titles;
 }
 
-// NEW: Fetch content via curl
-std::string FetchYouTubeResults(const std::string& query) {
+std::string FetchYouTubeResults(const std::string& query)
+{
     std::string escapedQuery = UrlEscape(query);
-    std::string url = "https://www.youtube.com/results?search_query=" + escapedQuery;
 
-    // Build the curl command
-    std::string command = "curl -s -A \"Mozilla/5.0\" \"" + url + "\"";
+    httplib::SSLClient cli("www.youtube.com", 443);
 
-    // Open a pipe to the command
-    FILE* pipe = popen(command.c_str(), "r");
+    cli.set_follow_location(true);
 
-    if (!pipe) {
-        std::cerr << "Failed to execute curl command\n";
+    httplib::Headers headers = {
+        {"User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/137.0.0.0 Safari/537.36"},
+            {"Accept", "*/*"}
+    };
+
+    std::string path =
+    "/results?search_query=" + escapedQuery;
+
+    auto res = cli.Get(
+        path.c_str(),
+                       headers);
+
+    if (!res)
+    {
+        std::cerr << "Request failed\n";
         return "";
     }
 
-    std::string result;
-    char buffer[256];
+    if (res->status != 200)
+    {
+        std::cerr << "HTTP error: "
+        << res->status
+        << '\n';
 
-    // Read the output line by line
-    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-        result += buffer;
+        return "";
     }
 
-    // Close the pipe
-    pclose(pipe);
-
-    return result;
+    return res->body;
 }
 
 
