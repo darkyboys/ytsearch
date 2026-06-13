@@ -11,11 +11,11 @@ The project demonstrates HTML scraping and lightweight parsing without relying o
 > **License:** CC0 1.0 Universal (Public Domain Dedication)
 
 ## Installation
-Make sure that you have git, gcc and curl installed on your system.
+Make sure that you have git, clang++ installed on your system.
 ```bash
 git clone https://github.com/darkyboys/ytsearch
 cd ytsearch
-g++ ytsearch.cpp -o ytsearch
+clang++ -std=c++20 ysearch.cpp -lssl -lcrypto -o ytsearch
 ```
 
 This will make the ytsearch binary. If you want to install for easier access then run
